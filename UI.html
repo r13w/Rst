@@ -931,6 +931,17 @@ input[type=range]::-ms-track {
             <!-- Checkbox groups here -->
             <div class="input-group">
               <label class="toggleButton">
+                <input id="toolCupboardToggle" type="checkbox" onchange="updateSetting('bToolCupboard', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="toolCupboardToggle">Cupboard</label>
+            </div>
+            <div class="input-group">
+              <label class="toggleButton">
                 <input id="lootStashToggle" type="checkbox" onchange="updateSetting('bStash', this.checked, 'bool')">
                 <div>
                   <svg viewBox="0 0 44 44">
@@ -1055,6 +1066,32 @@ input[type=range]::-ms-track {
           
         <div class="card-content">
             <!-- Checkbox groups here -->
+
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="tugboatToggle" type="checkbox" onchange="updateSetting('bTugboat', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="tugboatToggle">Tugboat</label>
+            </div>
+
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="attackHeliToggle" type="checkbox" onchange="updateSetting('bAttackHelicopter', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="attackHeliToggle">Attack Helicopter</label>
+            </div>
+
+
             <div class="input-group">
               <label class="toggleButton">
                 <input id="transportRowboatToggle" type="checkbox" onchange="updateSetting('bRowboat', this.checked, 'bool')">
@@ -1213,6 +1250,7 @@ input[type=range]::-ms-track {
         </div>
         </div>
 
+        <!--
         <div class="card">
           <h2 class="card-title">ESP Colors</h2>
           <div class="input-group">
@@ -1235,8 +1273,8 @@ input[type=range]::-ms-track {
             <label for="lootEspColor">Loot Color: </label>
             <input type="color" id="lootEspColor" value="#ad3323">
           </div>
-          <!-- Additional color pickers as needed -->
         </div>
+        -->
       </div>
     </div>
 
