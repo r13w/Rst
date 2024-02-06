@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Rust</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  </head>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap');
+
+*, *:before, *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+
+
+html {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: inherit;
+}
+
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+/* Styles the entire scrollbar to be thin */
+::-webkit-scrollbar {
+    width: 5px; /* Reducing the width for a thin scrollbar */
+    height: 5px; /* Height for horizontal scrollbar, if applicable */
+}
+
+/* Styles the track (background) of the scrollbar */
+::-webkit-scrollbar-track {
+    background: #1c1c1c; /* Using light purple as the background color */
+    border-radius: 10px;
+}
+
+/* Styles the handle (thumb) of the scrollbar */
+::-webkit-scrollbar-thumb {
+    background: #9713cf; /* Using crimson for the slider */
+    border-radius: 10px;
+}
+
+/* Optionally, styles the handle on hover or active states */
+::-webkit-scrollbar-thumb:hover {
+    background: #9713cf; /* Darker shade when hovered for better interaction feedback */
+}
+
+body {
+  min-height: 100vh;
+  background: #151515;
+  display: grid;
+  place-items: center;
+}
+
+input[type="color"] {
+   margin-left: 4px;
+    appearance: none;
+    vertical-align: middle; /* Adjusts vertical alignment */
+    margin-bottom: 4px; /* Adjust as necessary */
+    width: 25px;
+    height: 25px;
+    border: none;
+    background: transparent;
+    border-radius: 10%; /* Adjusted from 50% to 10% for a rounded box shape */
+    padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 10%; /* Adjusted from 50% to 10% */
+}
+
+
+/* Remove default styles for range input */
+input[type=range] {
+  -webkit-appearance: none;
+  margin: 10px 0;
+  width: 100%;
+  height: 12.8px;
+  background: transparent; /* Make the track transparent */
+  border: none; /* Remove borders */
+}
+
+input[type=range]:focus {
+  outline: none;
+}
+
+
+
+
+/* Style the thumb (slider handle) */
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px; /* Adjust the width of the thumb */
+  height: 20px; /* Adjust the height of the thumb */
+  background: #cd30db;
+  border-radius: 25%; /* Make it round */
+  cursor: pointer;
+  margin-top: -3.6px;
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+}
+
+/* Style the track */
+input[type=range]::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  height: 12.8px;
+  background: #9224ed;
+  border-radius: 25px;
+}
+
+/* Additional styles for other browsers (Firefox, IE) */
+input[type=range]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #cd30db;
+  border-radius: 25%;
+  cursor: pointer;
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+}
+
+input[type=range]::-moz-range-track {
+  height: 12.8px;
+  background: #9224ed;
+  border-radius: 25px;
+  border: none;
+}
+
+input[type=range]::-ms-thumb {
+  width: 20px;
+  height: 20px;
+  background: #cd30db;
+  border-radius: 25%;
+  cursor: pointer;
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+}
+
+input[type=range]::-ms-track {
+  height: 12.8px;
+  background: transparent;
+  border-color: transparent;
+  border-width: 39px 0;
+  color: transparent;
+}
+
+/* Focus styles for all browsers */
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #9224ed;
+}
+
+input[type=range]:focus::-moz-range-track {
+  background: #9224ed;
+}
+
+input[type=range]:focus::-ms-fill-lower {
+  background: #9224ed;
+}
+
+input[type=range]:focus::-ms-fill-upper {
+  background: #9224ed;
+}
+
+
+.toggleButton input:not(:checked) + div svg {
+  stroke: red; /* Sets the color to red when not checked */
+}
+.toggleButton input:checked + div svg {
+  stroke: #26ed2d; /* Sets the color to green when checked */
+}
+
+
+.toggleButton {
+  cursor: pointer;
+  display: inline-flex; /* changed from block to inline-flex */
+  align-items: center; /* ensure vertical alignment */
+  vertical-align: middle; /* Adjusts vertical alignment */
+  margin-bottom: 4px; /* Adjust as necessary */
+  justify-content: center; /* horizontally center the checkbox */
+  transform-origin: 50% 50%;
+  transform-style: preserve-3d;
+  transition: transform 0.02s ease;
+  transform: scale(0.8);
+  margin-right: 10px; /* add some spacing to the right */
+}
+.toggleButton:active {
+  transform: rotateX(30deg);
+}
+
+.toggleButton input {
+  display: none;
+}
+
+.toggleButton input + div {
+  width: 30px; /* Adjust width */
+  height: 30px; /* Adjust height */
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  position: relative;
+}
+
+.toggleButton input + div svg {
+  width: 30px; /* Adjust width */
+  height: 30px; /* Adjust height */
+  stroke-width: 2.5; /* Adjust stroke width if necessary  */
+  fill: none;
+  stroke: #fff;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  display: block;
+  position: absolute;
+  inset: -3px;
+  z-index: 1;
+  stroke-dashoffset: 124.6;
+  stroke-dasharray: 0 162.6 133 29.6;
+  transition: all 0.4s ease 0s;
+}
+
+.toggleButton input + div::before,
+.toggleButton input + div::after {
+  content: "";
+  width: 3px;
+  height: 16px;
+  background: #fff;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 5px;
+}
+
+.toggleButton input + div::before {
+  opacity: 0;
+  transform: scale(0.3) translate(-50%, -50%) rotate(45deg);
+  animation: bounceInBefore 0.3s linear forwards 0.3s;
+}
+
+.toggleButton input + div::after {
+  opacity: 0;
+  transform: scale(0.3) translate(-50%, -50%) rotate(-45deg);
+  animation: bounceInAfter 0.3s linear forwards 0.3s;
+}
+
+.toggleButton input:checked + div svg {
+  stroke-dashoffset: 162.6;
+  stroke-dasharray: 0 162.6 28 134.6;
+  transition: all 0.4s ease 0.2s;
+}
+
+.toggleButton input:checked + div::before {
+  opacity: 0;
+  transform: scale(0.3) translate(-50%, -50%) rotate(45deg);
+  animation: bounceOutBefore 0.3s linear forwards 0s;
+}
+
+.toggleButton input:checked + div::after {
+  opacity: 0;
+  transform: scale(0.3) translate(-50%, -50%) rotate(-45deg);
+  animation: bounceOutAfter 0.3s linear forwards 0s;
+}
+
+@keyframes bounceInBefore {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translate(-50%, -50%) rotate(45deg);
+  }
+
+  50% {
+    opacity: 0.9;
+    transform: scale(1.1) translate(-50%, -50%) rotate(45deg);
+  }
+
+  80% {
+    opacity: 1;
+    transform: scale(0.89) translate(-50%, -50%) rotate(45deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translate(-50%, -50%) rotate(45deg);
+  }
+}
+
+@keyframes bounceInAfter {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translate(-50%, -50%) rotate(-45deg);
+  }
+
+  50% {
+    opacity: 0.9;
+    transform: scale(1.1) translate(-50%, -50%) rotate(-45deg);
+  }
+
+  80% {
+    opacity: 1;
+    transform: scale(0.89) translate(-50%, -50%) rotate(-45deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translate(-50%, -50%) rotate(-45deg);
+  }
+}
+
+@keyframes bounceOutBefore {
+  0% {
+    opacity: 1;
+    transform: scale(1) translate(-50%, -50%) rotate(45deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0.3) translate(-50%, -50%) rotate(45deg);
+  }
+}
+
+@keyframes bounceOutAfter {
+  0% {
+    opacity: 1;
+    transform: scale(1) translate(-50%, -50%) rotate(-45deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0.3) translate(-50%, -50%) rotate(-45deg);
+  }
+}
+
+
+:root {
+	--background: #00000044;
+	--glow-object: #a530ff;
+	--glow-object-grad: linear-gradient(to bottom right, #9d1fff, #bf1fff);
+	--glow-object-grad-text: linear-gradient(to bottom right, #d770ff, #bc85ff);
+	--glow-shadow: #7900ff;
+	--glow-shadow-text: #7900ffbb;
+	--text: #d5d1dd;
+}
+
+  #body-container {
+    position: relative;
+    width: 344px; /* Adjust as necessary */
+    height: 552px; /* Adjust as necessary */
+  }
+
+  #body-container img.highlighted {
+    display: none; /* Initially hidden */
+    position: absolute;
+    width: 344px; /* Adjust as necessary */
+    height: 552px; /* Adjust as necessary */
+    top: 0;
+    left: 0;
+    pointer-events: none; /* Allows click through the image */
+  }
+
+  #body-container img.base {
+    position: absolute;
+    width: 344px; /* Adjust as necessary */
+    height: 552px; /* Adjust as necessary */
+    display: block; /* Always displayed */
+  }
+
+body {
+	width: 100%;
+	color: var(--text);
+	font-family: "Inter";
+	display: grid;
+	grid-template-columns: 4.5rem 1fr;
+	margin: 0;
+}
+
+nav {
+	position: sticky;
+	top: 0;
+	height: 100vh;
+	place-self: stretch;
+	background: var(--background);
+	backdrop-filter: blur(2rem);
+	display: flex;
+	flex-direction: column;
+	padding: 0.5rem;
+	d-gap: 0.5rem;
+}
+nav > a {
+	position: relative;
+	display: grid;
+	place-content: center;
+	color: var(--text);
+	height: 3.5rem;
+	border-radius: 0.75rem;
+	font-size: 1.5rem;
+	text-decoration: none;
+}
+
+nav > a:after {
+	position: absolute;
+	content: "";
+	left: 0.125rem;
+	top: 50%;
+	transform: translateY(-50%);
+	height: 0rem;
+	width: 0.3125rem;
+	width: 0.25rem;
+	border-radius: 1rem;
+	background: var(--glow-object);
+	transition: height 200ms ease, box-shadow 200ms ease;
+}
+.video-bg {
+	position: fixed;
+	right: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+}
+	video {
+	 width: 100%;
+	 height: 100%;
+	 object-fit: cover;
+	}
+
+nav > a:hover {
+	background: #ffffff15
+}
+
+nav > a:hover:after {
+	height: 2.5rem;
+	box-shadow: var(--glow-shadow) 0 0 7px 1px;
+}
+
+nav > a.active:after {
+	height: 2.5rem;
+	box-shadow: var(--glow-shadow) 0 0 7px 1px;
+}
+
+nav > .navspacer {
+	flex-grow: 1;
+}
+
+.dashboard {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr); /* two equal columns */
+	grid-gap: 100px; /* spacing between cards */
+	padding: 70px; /* padding around the grid */
+}
+
+.dashboardset {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr); /* two equal columns */
+  grid-gap: 100px; /* spacing between cards */
+  padding: 70px; /* padding around the grid */
+}
+
+
+.dashboardaim {
+      margin-right: 150px; /* Adjust as necessary */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr) 300px; /* Adjust the '300px' to the width of your 'NEW' card */
+  grid-template-areas: 
+    "card card selector"
+    "card card selector";
+      grid-gap: 70px; /* spacing between cards */
+  padding: 70px; /* padding around the grid */
+}
+  
+
+
+
+.card {
+    display: flex;
+    flex-direction: column;
+    min-width: 450px;
+    position: relative;
+    border-radius: 0.75rem;
+    background: var(--background);
+    backdrop-filter: blur(2rem);
+    padding: 25px 40px; /* Add padding to create space inside the card */
+}
+
+
+.card-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal columns for checkboxes */
+}
+
+.input-group {
+  margin-bottom: 10px; /* Adjust spacing between inputs */
+}
+
+/* Ensure sliders span the full width of the card */
+.card .slider-group {
+  grid-column: 1 / -1; /* Make the slider span both columns */
+}
+
+.card-title {
+  width: 100%;
+  text-align: center;
+}
+
+.card > h2, .card > .bigstats, .card > ul, .card > table {
+    padding: 0 8px; /* Adjust padding as needed for internal elements */
+}
+.card > .bigstats {
+	padding-top: 1.75rem;
+	display: grid;
+	grid-auto-flow: row;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-row-gap: 2rem;
+	place-content: center;
+	padding-bottom: 0.5rem;
+}
+
+.card > .bigstats > .stat {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+.statnum {
+	background: var(--glow-object-grad-text);
+	font-size: 2rem;
+	font-weight: 600;
+	background-clip: text;
+	-webkit-background-clip: text;
+	color: transparent;
+	filter: drop-shadow(var(--glow-shadow-text) 0px 0px 5px);
+	line-height: 0.9;
+}
+.card > .bigstats > .stat > .stattext {
+	font-weight: 500;
+}
+
+.card > ul {
+	margin: 0;
+	padding: 0 0.5rem;
+}
+.card > ul > li {
+	list-style-type: none;
+	margin: 0;
+	padding: 0.5rem 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border-top: 1px solid #ffffff22;
+	font-weight: 500;
+}
+
+.progresscircle {
+	--progress: 33;
+	position: relative;
+	width: 4.5rem;
+	height: 4.5rem;
+	display: grid;
+	place-content: center;
+	font-weight: 600;
+	margin: -0.375rem -0.25rem;
+}
+.progresscircle > svg {
+	position: absolute;
+	inset: 0;
+	transform: rotate(-90deg);
+}
+.progresscircle > svg > circle {
+	fill: none;
+  stroke: var(--glow-object);
+  filter: drop-shadow(var(--glow-shadow) 0 0 5px);
+  stroke-width: 8px;
+  stroke-dasharray: 250;
+  stroke-dashoffset: calc(250 - 2.5 * var(--progress));
+}
+
+.card > table {
+	flex-grow: 1;
+	margin: 0 0.5rem;
+	border-spacing: 0;
+}
+.card > table th, .card > table td {
+	margin: 0;
+	text-align: center;
+	border-top: 1px solid #ffffff22;
+}
+
+.card.profile {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+.card.profile > h2 {
+	font-weight: 600;
+	font-size: 1.5rem;
+}
+.card.profile > p {
+	margin: 0;
+	padding-left: 0.5rem;
+	font-weight: 500;
+	transform: translateY(-0.375rem)
+}
+
+/* Custom slider track styles */
+input[type=range].slider {
+  background: linear-gradient(to right, #9224ed 50%, #00000044 50%);
+  border-radius: 25px; /* Round the corners of the custom track */
+}
+
+/* Style for the active part of the slider */
+input[type=range].slider::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  background: transparent;
+}
+
+input[type=range].slider::-moz-range-track {
+  background: transparent;
+}
+
+input[type=range].slider::-ms-track {
+  background: transparent;
+}
+
+/* Style the track for WebKit browsers */
+input[type=range]::-webkit-slider-runnable-track {
+  border-radius: 25px; /* Round the corners of the track */
+}
+
+/* Style the track for Firefox */
+input[type=range]::-moz-range-track {
+  border-radius: 25px; /* Round the corners of the track */
+}
+
+/* Style the track for IE */
+input[type=range]::-ms-track {
+  border-radius: 25px; /* Round the corners of the track */
+}
+
+
+.bg {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom right,
+    #0D1B2A,  /* Deep navy blue */
+    #1B263B,  /* Dark slate grey */
+    #3E2C41,  /* Dark plum */
+    #3D405B,  /* Dark slate blue */
+    #2C3531,  /* Dark jungle green */
+    #354B5E,  /* Dark cerulean */
+    #463F3A,  /* Dark coffee */
+    #283C63); /* Deep cobalt blue */
+  background-repeat: no-repeat;
+  background-size: 1000% 1000%;
+  animation: gradient 15s ease infinite;
+}
+
+
+@keyframes gradient { 
+  0%{background-position:0% 0%}
+  50%{background-position:100% 100%}
+  100%{background-position:0% 0%}
+}
+
+
+  </style>
+  <body>
+    <div class="bg"></div>
+    <nav>
+      <a href="#" class="active" onclick="openTab(event, 'homeTab')">
+        <ion-icon name="home"></ion-icon>
+      </a>
+      <a href="#" onclick="openTab(event, 'visualsTab')">
+        <i class="fa-solid fa-eye"></i>
+      </a>
+      <div class="navspacer"></div>
+      <a href="#" onclick="window.location.href = 'https://google.com';">
+        <i class="fa-solid fa-share"></i>
+      </a>
+      <a href="#" onclick="openTab(event, 'settingsTab')">
+        <ion-icon name="settings"></ion-icon>
+      </a>
+    </nav>
+
+    <div id="homeTab" class="tabcontent" style="display: block;">
+      <div class="card">
+        <h2 class="card-title">"Fuck You Mexican" -Aquaz</h2>
+      </div>
+    </div>
+
+
+ <div id="settingsTab" class="tabcontent" style="display: none;">
+    <div class="dashboardset">
+        <div class="card">
+          <h2 class="card-title">Settings</h2>
+          <div class="card-content">
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="FPSLimiter" type="checkbox" onchange="updateSetting('bLimitFPS', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="FPSLimiter">FPS Limiter</label>
+            </div>
+          </div>
+          <div class="input-group">
+            <label class="slider-label">FPS Limiter: <span class="slider-value">144</span></label>
+            <input type="range" class="slider" min="60" max="244" value="144" step="1" onchange="updateSetting('TargetFPS', this.value, 'float')">
+          </div>
+          <div class="input-group">
+            <label class="slider-label">Cache Update Interval: <span class="slider-value">6</span></label>
+            <input type="range" class="slider" min="5" max="20" value="6" step="1" onchange="updateSetting('CacheUpdateInterval', this.value, 'float')">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div id="visualsTab" class="tabcontent" style="display: none;">
+      <div class="dashboardaim">
+        <!-- Player ESP Card -->
+        <div class="card">
+          <h2 class="card-title">Players</h2>
+          
+        <div class="card-content">
+            <!-- Checkbox groups here -->
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="playerEspCornerBoxesToggle" type="checkbox" onchange="updateSetting('bCornerBoxes', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="playerEspCornerBoxesToggle">Corner Boxes</label>
+            </div>
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="playerEspSkeletonsToggle" type="checkbox" onchange="updateSetting('bSkeletons', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="playerEspSkeletonsToggle">Skeletons</label>
+            </div>
+
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="playerEspSnaplinesToggle" type="checkbox" onchange="updateSetting('bSnaplines', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="playerEspSnaplinesToggle">Snaplines</label>
+            </div>
+            
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="playerEspNameToggle" type="checkbox" onchange="updateSetting('bPlayerNames', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="playerEspNameToggle">Player Name</label>
+            </div>
+                        <div class="input-group">
+              <label class="toggleButton">
+                <input id="playerEspHealthToggle" type="checkbox" onchange="updateSetting('bPlayerHealth', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="playerEspHealthToggle">Player Health</label>
+            </div>
+            
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="playerEspItemNameToggle" type="checkbox" onchange="updateSetting('bCurrentItem', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="playerEspItemNameToggle">Current Item Name</label>
+            </div>
+            
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="playerTeammatesToggle" type="checkbox" onchange="updateSetting('bTeamMates', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="playerTeammatesToggle">Show Teammates</label>
+            </div>
+            
+            
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="miscDistance" type="checkbox" onchange="updateSetting('bPlayerDistance', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="miscDistance">Distance</label>
+            </div>
+            <!-- ... other checkbox groups ... -->
+        </div>
+          <div class="input-group">
+            <label for="maxPlayerRenderDistance" class="slider-label">Max Player Render Distance: <span class="slider-value" span id="maxPlayerRenderDistanceValue">250</span>m</label>
+            <input type="range" id="maxPlayerRenderDistance" class="slider" min="0" max="999" value="250" step="1" oninput="updateSliderValueDisplay(this.value)" onchange="updateSetting('fMaxPlayer', parseFloat(this.value), 'float')">
+        </div>
+        </div>
+
+        
+        <div class="card">
+          <h2 class="card-title">Resources</h2>
+          
+        <div class="card-content">
+            <!-- Checkbox groups here -->
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="resourceStoneToggle" type="checkbox" onchange="updateSetting('bStone', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="resourceStoneToggle">Stone</label>
+            </div>
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="resourceMetalToggle" type="checkbox" onchange="updateSetting('bMetal', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="resourceMetalToggle">Metal</label>
+            </div>
+
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="resourceSulfurToggle" type="checkbox" onchange="updateSetting('bSulfur', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="resourceSulfurToggle">Sulfur</label>
+            </div>
+            
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="resourceWoodToggle" type="checkbox" onchange="updateSetting('bWood', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="resourceWoodToggle">Wood</label>
+            </div>
+                        <div class="input-group">
+              <label class="toggleButton">
+                <input id="resourceHempToggle" type="checkbox" onchange="updateSetting('bHemp', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="resourceHempToggle">Hemp</label>
+            </div>
+            
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="miscDistance" type="checkbox" onchange="updateSetting('bResourceDistance', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="miscDistance">Distance</label>
+            </div>
+            <!-- ... other checkbox groups ... -->
+        </div>
+          <div class="input-group">
+            <label for="maxResourceRenderDistance" class="slider-label">Max Resource Render Distance: <span class="slider-value" span id="maxResourceRenderDistanceValue">150</span>m</label>
+            <input type="range" id="maxResourceRenderDistance" class="slider" min="0" max="999" value="150" step="1" oninput="updateSliderValueDisplay(this.value)" onchange="updateSetting('fMaxResource', parseFloat(this.value), 'float')">
+          </div>
+        </div>
+
+
+        <div class="card">
+          <h2 class="card-title">Loot Containers</h2>
+          
+        <div class="card-content">
+            <!-- Checkbox groups here -->
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="lootStashToggle" type="checkbox" onchange="updateSetting('bStash', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="lootStashToggle">Stash</label>
+            </div>
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="lootBarrelToggle" type="checkbox" onchange="updateSetting('bBarrel', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="lootBarrelToggle">Barrel</label>
+            </div>
+
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="lootOilBarrelToggle" type="checkbox" onchange="updateSetting('bOilBarrel', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="lootOilBarrelToggle">Oil Barrel</label>
+            </div>
+            
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="lootEliteCrateToggle" type="checkbox" onchange="updateSetting('bEliteCrate', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="lootEliteCrateToggle">Elite Crate</label>
+            </div>
+                        <div class="input-group">
+              <label class="toggleButton">
+                <input id="lootMilitaryCrateToggle" type="checkbox" onchange="updateSetting('bMilitaryCrate', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="lootMilitaryCrateToggle">Military Crate</label>
+            </div>
+                                    <div class="input-group">
+              <label class="toggleButton">
+                <input id="lootMedicalCrateToggle" type="checkbox" onchange="updateSetting('bMedicalCrate', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="lootMedicalCrateToggle">Medical Crate</label>
+            </div>
+                                    <div class="input-group">
+              <label class="toggleButton">
+                <input id="lootRegularCrateToggle" type="checkbox" onchange="updateSetting('bRegularCrate', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="lootRegularCrateToggle">Regular Crate</label>
+            </div>
+                                    <div class="input-group">
+              <label class="toggleButton">
+                <input id="lootFoodCrateToggle" type="checkbox" onchange="updateSetting('bFoodCrate', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="lootFoodCrateToggle">Food Crate</label>
+            </div>
+                                    <div class="input-group">
+              <label class="toggleButton">
+                <input id="lootToolCrateToggle" type="checkbox" onchange="updateSetting('bToolCrate', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="lootToolCrateToggle">Tool Crate</label>
+            </div>
+            
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="miscDistance" type="checkbox" onchange="updateSetting('bContainerDistance', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="miscDistance">Distance</label>
+            </div>
+            <!-- ... other checkbox groups ... -->
+        </div>
+          <div class="input-group">
+            <label for="maxContainerRenderDistance" class="slider-label">Max Container Render Distance: <span class="slider-value" span id="maxContainerRenderDistanceValue">150</span>m</label>
+            <input type="range" id="maxContainerRenderDistance" class="slider" min="0" max="999" value="150" step="1" oninput="updateSliderValueDisplay(this.value)" onchange="updateSetting('fMaxContainer', parseFloat(this.value), 'float')">
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title">Transportation</h2>
+          
+        <div class="card-content">
+            <!-- Checkbox groups here -->
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="transportRowboatToggle" type="checkbox" onchange="updateSetting('bRowboat', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="transportRowboatToggle">Rowboat</label>
+            </div>
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="transportRHIBToggle" type="checkbox" onchange="updateSetting('bRHIB', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="transportRHIBToggle">RHIB</label>
+            </div>
+
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="transportKayakToggle" type="checkbox" onchange="updateSetting('bKayak', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="transportKayakToggle">Kayak</label>
+            </div>
+            
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="transportMinicopterToggle" type="checkbox" onchange="updateSetting('bMinicopter', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="transportMinicopterToggle">Minicopter</label>
+            </div>
+                        <div class="input-group">
+              <label class="toggleButton">
+                <input id="transportScrapHeliToggle" type="checkbox" onchange="updateSetting('bScrapHelicopter', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="transportScrapHeliToggle">Scrap Helicopter</label>
+            </div>
+                                                <div class="input-group">
+              <label class="toggleButton">
+                <input id="transportDistance" type="checkbox" onchange="updateSetting('bVehicleDistance', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="transportDistance">Distance</label>
+            </div>
+            <!-- ... other checkbox groups ... -->
+        </div>
+        <div class="input-group">
+          <label for="maxVehicleRenderDistance" class="slider-label">Max Vehicle Render Distance: <span class="slider-value" span id="maxVehicleRenderDistanceValue">150</span>m</label>
+          <input type="range" id="maxVehicleRenderDistance" class="slider" min="0" max="999" value="150" step="1" oninput="updateSliderValueDisplay(this.value)" onchange="updateSetting('fMaxVehicle', parseFloat(this.value), 'float')">
+        </div>
+        </div>
+
+
+        <div class="card">
+          <h2 class="card-title">Misc</h2>
+          
+        <div class="card-content">
+            <!-- Checkbox groups here -->
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="miscPickupsToggle" type="checkbox" onchange="updateSetting('bPickups', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="miscPickupsToggle">Pickups</label>
+            </div>
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="miscSupplyDropsToggle" type="checkbox" onchange="updateSetting('bSupplyDrops', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="miscSupplyDropsToggle">Supply Drops</label>
+            </div>
+
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="miscTrapsToggle" type="checkbox" onchange="updateSetting('bTraps', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="miscTrapsToggle">Traps</label>
+            </div>
+            
+            <div class="input-group">
+              <label class="toggleButton">
+                <input id="miscCorpseToggle" type="checkbox" onchange="updateSetting('bCorpse', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="miscCorpseToggle">Corpse</label>
+            </div>
+                        <div class="input-group">
+              <label class="toggleButton">
+                <input id="miscBradleyToggle" type="checkbox" onchange="updateSetting('bBradley', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="miscBradleyToggle">Bradley</label>
+            </div>
+                                    <div class="input-group">
+              <label class="toggleButton">
+                <input id="miscDistance" type="checkbox" onchange="updateSetting('bMiscDistance', this.checked, 'bool')">
+                <div>
+                  <svg viewBox="0 0 44 44">
+                    <path d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758" transform="translate(-2.000000, -2.000000)"></path>
+                  </svg>
+                </div>
+              </label>
+              <label for="miscDistance">Distance</label>
+            </div>
+            <!-- ... other checkbox groups ... -->
+        </div>
+        <div class="input-group">
+          <label for="maxMiscRenderDistance" class="slider-label">Max Vehicle Render Distance: <span class="slider-value" span id="maxMiscRenderDistanceValue">150</span>m</label>
+          <input type="range" id="maxMiscRenderDistance" class="slider" min="0" max="999" value="150" step="1" oninput="updateSliderValueDisplay(this.value)" onchange="updateSetting('fMaxMisc', parseFloat(this.value), 'float')">
+        </div>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title">ESP Colors</h2>
+          <div class="input-group">
+            <label for="playerEspBoxColor">Player Box Color: </label>
+            <input type="color" id="playerEspBoxColor" value="#235aad">
+          </div>
+          <div class="input-group">
+            <label for="playerEspSkeletonColor">Player Skeleton Color: </label>
+            <input type="color" id="playerEspSkeletonColor" value="#239bad">
+          </div>
+          <div class="input-group">
+            <label for="playerEspNameColor">Player Name Color: </label>
+            <input type="color" id="playerEspNameColor" value="#23ad81">
+          </div>
+          <div class="input-group">
+            <label for="grenadesEspColor">Grenades Color: </label>
+            <input type="color" id="grenadesEspColor" value="#23ad43">
+          </div>
+          <div class="input-group">
+            <label for="lootEspColor">Loot Color: </label>
+            <input type="color" id="lootEspColor" value="#ad3323">
+          </div>
+          <!-- Additional color pickers as needed -->
+        </div>
+      </div>
+    </div>
+
+    <script>
+document.body.addEventListener('input', function(event) {
+  if (event.target.classList.contains('slider')) {
+    // Find the closest '.input-group' parent and then the corresponding '.slider-value' span
+    const valueDisplay = event.target.closest('.input-group').querySelector('.slider-value');
+    valueDisplay.textContent = `${event.target.value}`;
+  }
+});
+
+    </script>
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://kit.fontawesome.com/e267099c50.js" crossorigin="anonymous"></script>
+    <script>
+
+    function updateSliderBackground(slider) {
+      const percentage = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
+      slider.style.background = `linear-gradient(to right, #9224ed ${percentage}%, #00000044 ${percentage}%)`;
+    }
+
+    // Initial setup and event listener for each slider
+    document.querySelectorAll('.slider').forEach(slider => {
+      updateSliderBackground(slider); // Set up the initial background
+      slider.addEventListener('input', () => updateSliderBackground(slider));
+    });
+
+
+      function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+        tablinks = document.querySelectorAll("nav > a");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].classList.remove("active");
+        }
+        var selectedTabContent = document.getElementById(tabName);
+        if (selectedTabContent) {
+          selectedTabContent.style.display = "block";
+        } else {
+          console.error("No tab content found for ID:", tabName);
+        }
+        evt.currentTarget.classList.add("active");
+      }
+    </script>
+    <script>
+
+
+function updateSetting(key, value, type) {
+    let url = `/updateSetting?key=${encodeURIComponent(key)}&value=${encodeURIComponent(value)}&type=${encodeURIComponent(type)}`;
+    fetch(url) 
+    .then(response => response.json())
+    .then(data => {
+            console.log("Updated", key, "to", value);
+        })
+        .catch(error => console.error('Error:', error));
+} 
+
+
+    </script>
+  </body>
+</html>
